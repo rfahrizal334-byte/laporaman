@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#0B2545">
+  <meta name="description" content="LaporAman — sarana lapor anonim lokal untuk mencegah tawuran, perundungan, miras, dan narkoba di lingkungan sekitar.">
+  <title>LaporAman — Lapor tanpa takut, cegah sebelum terlambat</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%230B2545'/%3E%3Cpath d='M32 12l16 6v14c0 11-7 17-16 20-9-3-16-9-16-20V18l16-6z' fill='%2316A34A'/%3E%3Cpath d='M24 32l6 6 12-12' stroke='white' stroke-width='4' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Lewati ke konten utama</a>
+
+  <div class="demo-bar demo-bar--live">
+    <span class="demo-bar__dot" aria-hidden="true"></span>
+    <p><strong>Laporan tersimpan aman.</strong> Tanpa nama, email, atau nomor ponsel. Untuk bahaya langsung, hubungi 110/119.</p>
+  </div>
+
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="#beranda" aria-label="LaporAman, kembali ke beranda">
+        <span class="brand__mark" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M12 2.75l7 2.6v6.1c0 4.6-2.95 7.6-7 8.8-4.05-1.2-7-4.2-7-8.8v-6.1l7-2.6z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M8.6 12.1l2.3 2.3 4.6-4.7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </span>
+        <span class="brand__text">Lapor<span>Aman</span></span>
+      </a>
+
+      <button class="nav-toggle" type="button" aria-label="Buka menu" aria-expanded="false" aria-controls="site-nav">
+        <span></span><span></span><span></span>
+      </button>
+
+      <nav class="site-nav" id="site-nav" aria-label="Navigasi utama">
+        <a href="#cara-kerja">Cara kerja</a>
+        <a href="#privasi">Keamanan</a>
+        <a href="#faq">Tanya jawab</a>
+        <a class="btn btn--small btn--ghost" href="#cek-tiket">Cek tiket</a>
+        <a class="btn btn--small" href="#lapor">Kirim laporan</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <!-- HERO -->
+    <section class="hero" id="beranda">
+      <div class="hero__glow" aria-hidden="true"></div>
+      <div class="container hero__inner">
+        <div class="hero__copy">
+          <span class="eyebrow"><span aria-hidden="true">●</span> Pencegahan dini lingkungan</span>
+          <h1>Lapor tanpa takut,<br><span>cegah sebelum terlambat.</span></h1>
+          <p class="hero__lead">Temukan gelagat mencurigakan di sekitarmu? Sampaikan dengan aman, tanpa nama, tanpa nomor ponsel, tanpa email. Satu kode tiket cukup untuk memantau tindak lanjutnya.</p>
+          <div class="hero__actions">
+            <a class="btn btn--large" href="#lapor">Sampaikan laporan <span aria-hidden="true">→</span></a>
+            <a class="btn btn--large btn--outline-light" href="#cara-kerja">Lihat cara kerja</a>
+          </div>
+          <ul class="hero__points">
+            <li><span aria-hidden="true">✓</span> Tanpa pendaftaran akun</li>
+            <li><span aria-hidden="true">✓</span> Identitas pelapor disembunyikan</li>
+            <li><span aria-hidden="true">✓</span> Fokus pada langkah preventif</li>
+          </ul>
+        </div>
+
+        <div class="hero__visual" aria-label="Ilustrasi kartu laporan anonim">
+          <div class="visual-card visual-card--back" aria-hidden="true"></div>
+          <div class="visual-card visual-card--front">
+            <div class="visual-card__top">
+              <span class="visual-card__logo"><svg viewBox="0 0 24 24" fill="none"><path d="M12 3l7 2.5v5.8c0 4.3-2.8 7.1-7 8.2-4.2-1.1-7-3.9-7-8.2V5.5L12 3z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg></span>
+              <span class="visual-card__status"><span aria-hidden="true"></span> Menunggu peninjauan</span>
+            </div>
+            <p class="visual-card__label">LAPORAN MASUK</p>
+            <h2 class="visual-card__title">Potensi tawuran di dekat area sekolah</h2>
+            <div class="visual-card__line"></div>
+            <div class="visual-card__line visual-card__line--short"></div>
+            <div class="visual-card__meta">
+              <div><span>Lokasi</span><strong>Kec. Sukamaju</strong></div>
+              <div><span>Prioritas</span><strong class="tag-priority">Sedang</strong></div>
+            </div>
+            <div class="visual-card__ticket">
+              <span>Kode tiket kamu</span>
+              <strong>LA-20261125-7K3P9Q</strong>
+            </div>
+          </div>
+          <div class="visual-badge" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none"><path d="M12 3l7 2.5v5.8c0 4.3-2.8 7.1-7 8.2-4.2-1.1-7-3.9-7-8.2V5.5L12 3z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="M9 12l2 2 4-4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Anonim oleh desain
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- STRIP -->
+    <section class="strip" aria-label="Ringkasan layanan">
+      <div class="container strip__inner">
+        <div class="strip__item"><span class="strip__icon" aria-hidden="true">01</span><div><strong>Tanpa akun</strong><small>Cukup buka dan isi form</small></div></div>
+        <div class="strip__item"><span class="strip__icon" aria-hidden="true">02</span><div><strong>Tanpa jejak identitas</strong><small>Tidak minta nama atau kontak</small></div></div>
+        <div class="strip__item"><span class="strip__icon" aria-hidden="true">03</span><div><strong>Satu kode tiket</strong><small>Untuk cek perkembangan</small></div></div>
+        <div class="strip__item"><span class="strip__icon" aria-hidden="true">04</span><div><strong>Tindak lanjut terestruktur</strong><small>Diteruskan ke pihak terkait</small></div></div>
+      </div>
+    </section>
+
+    <!-- CARA KERJA -->
+    <section class="section" id="cara-kerja">
+      <div class="container">
+        <div class="section-head section-head--center">
+          <span class="eyebrow eyebrow--dark">Alur laporan</span>
+          <h2>Empat langkah, sederhana dan aman</h2>
+          <p>Dari aduan yang masuk sampai tindakan pencegahan di lapangan.</p>
+        </div>
+        <ol class="steps">
+          <li class="step">
+            <span class="step__number">1</span>
+            <div class="step__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M4 6.5h16M4 12h10M4 17.5h7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></div>
+            <h3>Akses bebas identitas</h3>
+            <p>Buka platform dan isi laporan. Tidak ada formulir nama, email, atau nomor ponsel.</p>
+          </li>
+          <li class="step">
+            <span class="step__number">2</span>
+            <div class="step__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M12 3l7 2.5v5.8c0 4.3-2.8 7.1-7 8.2-4.2-1.1-7-3.9-7-8.2V5.5L12 3z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M9 12l2 2 4-4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+            <h3>Jejak digital diputus</h3>
+            <p>Metadata foto bukti dibersihkan otomatis sebelum disimpan; aplikasi tidak mengumpulkan identitas pelapor.</p>
+          </li>
+          <li class="step">
+            <span class="step__number">3</span>
+            <div class="step__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="6.5" stroke="currentColor" stroke-width="1.8"/><path d="M16 16l4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></div>
+            <h3>Penyaringan & prioritas</h3>
+            <p>Laporan ditinjau manual, dibantu filter untuk memisahkan pola valid dan menentukan urgensi.</p>
+          </li>
+          <li class="step">
+            <span class="step__number">4</span>
+            <div class="step__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M4 12.5l5 5L20 6.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+            <h3>Tindak lanjut lokal</h3>
+            <p>Laporan tervalidasi diteruskan ke guru BK, pengurus wilayah, atau aparat setempat.</p>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- KATEGORI -->
+    <section class="section section--soft" id="fokus">
+      <div class="container">
+        <div class="section-head">
+          <span class="eyebrow eyebrow--dark">Fokus pengawasan</span>
+          <h2>Jenis situasi yang bisa disampaikan</h2>
+          <p>Pilih kategori yang paling mendekati. Kamu tidak perlu membuktikan apa pun untuk menyampaikan kekhawatiran.</p>
+        </div>
+        <div class="cards">
+          <article class="category-card"><span class="category-card__icon" aria-hidden="true">⚡</span><h3>Potensi tawuran</h3><p>Kelompok mencurigakan, ancaman, atau rencana bentrok di area sekolah dan lingkungan warga.</p></article>
+          <article class="category-card"><span class="category-card__icon" aria-hidden="true">💬</span><h3>Perundungan</h3><p>Intimidasi, perploncoan, atau tekanan sosial yang berulang dan membahayakan korban.</p></article>
+          <article class="category-card"><span class="category-card__icon" aria-hidden="true">🍶</span><h3>Miras</h3><p>Indikasi peredaran atau konsumsi minuman beralkohol di ruang publik atau lingkungan.</p></article>
+          <article class="category-card"><span class="category-card__icon" aria-hidden="true">🚫</span><h3>Narkoba</h3><p>Temuan atau dugaan peredaran zat terlarang yang perlu ditindaklanjuti secara hati-hati.</p></article>
+          <article class="category-card"><span class="category-card__icon" aria-hidden="true">🛡️</span><h3>Kekerasan lain</h3><p>Situasi yang membahayakan keselamatan fisik atau psikis seseorang di sekitarmu.</p></article>
+          <article class="category-card"><span class="category-card__icon" aria-hidden="true">✍️</span><h3>Lainnya</h3><p>Hal lain yang menurutmu perlu diperhatikan, meski tidak masuk kategori di atas.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <!-- PRIVASI -->
+    <section class="section" id="privasi">
+      <div class="container privacy-grid">
+        <div class="privacy-copy">
+          <span class="eyebrow eyebrow--dark">Keamanan & privasi</span>
+          <h2>Dirancang agar pelapor tetap tak terlihat</h2>
+          <p>Prinsipnya sederhana: sistem tidak boleh mengetahui siapa kamu. Karena itu, laporan tidak meminta data pribadi apa pun.</p>
+          <div class="privacy-note">
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.8"/><path d="M12 8v5M12 16.5v.01" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+            <p><strong>Keamanan data:</strong> laporan disimpan tanpa identitas pelapor, metadata foto dibersihkan, dan akses admin dibatasi. Kode tiket adalah satu-satunya kunci pengecekan. Tetap gunakan perangkat dan jaringan yang aman.</p>
+          </div>
+        </div>
+        <div class="privacy-list">
+          <div class="privacy-item"><span aria-hidden="true">01</span><div><h3>Tanpa nama, email, atau nomor</h3><p>Form sengaja dibuat sesingkat mungkin agar tidak ada data yang bisa mengarah ke pelapor.</p></div></div>
+          <div class="privacy-item"><span aria-hidden="true">02</span><div><h3>Metadata foto dihapus</h3><p>EXIF/GPS pada bukti foto dibersihkan otomatis sebelum laporan disimpan.</p></div></div>
+          <div class="privacy-item"><span aria-hidden="true">03</span><div><h3>Kode tiket acak</h3><p>Kamu mendapat satu kode unik untuk mengecek status tanpa perlu login atau identitas.</p></div></div>
+          <div class="privacy-item"><span aria-hidden="true">04</span><div><h3>Akses dibatasi</h3><p>Hanya petugas peninjau yang memiliki hubungan dengan penanganan laporan yang dapat melihat isinya.</p></div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FORM LAPORAN -->
+    <section class="section section--report" id="lapor">
+      <div class="container report-grid">
+        <div class="report-aside">
+          <span class="eyebrow eyebrow--light">Sampaikan aduan</span>
+          <h2>Ceritakan apa yang kamu lihat</h2>
+          <p>Tulis sejelas mungkin tanpa membuka identitasmu. Kami tidak meminta nama, kontak, atau akun.</p>
+          <ul class="report-tips">
+            <li><span aria-hidden="true">✓</span> Sertakan lokasi dan perkiraan waktu</li>
+            <li><span aria-hidden="true">✓</span> Jangan sebutkan identitas pelapor</li>
+            <li><span aria-hidden="true">✓</span> Hindari foto yang memperlihatkan dirimu</li>
+            <li><span aria-hidden="true">✓</span> Simpan kode tiket yang diberikan</li>
+          </ul>
+          <div class="emergency-box">
+            <strong>Inginkah ini langsung ditangani?</strong>
+            <p>Jika ada bahaya langsung, hubungi <a href="tel:110">110</a>, <a href="tel:119">119</a>, atau pihak sekolah/setempat sekarang juga.</p>
+          </div>
+        </div>
+
+        <form class="report-form" id="reportForm" novalidate>
+          <div class="form-head">
+            <span class="form-head__badge">Anonim</span>
+            <p>Laporan akan disimpan tanpa identitas pelapor. Jangan sertakan data pribadi kamu.</p>
+          </div>
+
+          <fieldset class="field-group">
+            <legend>Jenis laporan <span aria-hidden="true">*</span></legend>
+            <div class="chips" id="categoryChips">
+              <label class="chip"><input type="radio" name="kategori" value="Potensi tawuran" required><span>Potensi tawuran</span></label>
+              <label class="chip"><input type="radio" name="kategori" value="Perundungan"><span>Perundungan</span></label>
+              <label class="chip"><input type="radio" name="kategori" value="Miras"><span>Miras</span></label>
+              <label class="chip"><input type="radio" name="kategori" value="Narkoba"><span>Narkoba</span></label>
+              <label class="chip"><input type="radio" name="kategori" value="Kekerasan"><span>Kekerasan</span></label>
+              <label class="chip"><input type="radio" name="kategori" value="Lainnya"><span>Lainnya</span></label>
+            </div>
+            <small class="field-error" id="kategoriError" hidden>Pilih salah satu kategori.</small>
+          </fieldset>
+
+          <div class="field">
+            <label for="lokasi">Lokasi kejadian <span aria-hidden="true">*</span></label>
+            <input id="lokasi" name="lokasi" type="text" placeholder="Contoh: depan gerbang SMP Negeri 3, Kec. Sukamaju" autocomplete="off" required>
+            <small class="field-hint">Cukup sebutkan area, bukan alamat rumah seseorang.</small>
+            <small class="field-error" id="lokasiError" hidden>Lokasi wajib diisi.</small>
+          </div>
+
+          <div class="field-row">
+            <div class="field">
+              <label for="waktu">Perkiraan waktu <span aria-hidden="true">*</span></label>
+              <select id="waktu" name="waktu" required>
+                <option value="">Pilih waktu</option>
+                <option value="Hari ini">Hari ini</option>
+                <option value="1–3 hari lalu">1–3 hari lalu</option>
+                <option value="Lebih dari 3 hari lalu">Lebih dari 3 hari lalu</option>
+                <option value="Berulang">Berulang / tidak pasti</option>
+              </select>
+              <small class="field-error" id="waktuError" hidden>Pilih perkiraan waktu.</small>
+            </div>
+            <div class="field">
+              <label for="urgensi">Tingkat urgensi</label>
+              <select id="urgensi" name="urgensi">
+                <option value="Sedang">Sedang — perlu perhatian</option>
+                <option value="Tinggi">Tinggi — ada bahaya langsung</option>
+                <option value="Rendah">Rendah — informasi awal</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="kronologi">Kronologi singkat <span aria-hidden="true">*</span></label>
+            <textarea id="kronologi" name="kronologi" rows="5" placeholder="Apa yang terjadi? Siapa yang terlibat (tanpa menyebut identitas pelapor)? Bagaimana situasinya sekarang?" minlength="20" required></textarea>
+            <div class="field-footer"><small class="field-hint">Minimal 20 karakter.</small><small class="counter" id="charCounter">0 karakter</small></div>
+            <small class="field-error" id="kronologiError" hidden>Ceritakan minimal 20 karakter.</small>
+          </div>
+
+          <div class="field">
+            <label for="bukti">Bukti foto <span class="optional">(opsional)</span></label>
+            <input id="bukti" name="bukti" type="file" accept="image/*">
+            <small class="field-hint" id="fileHint">Foto diunggah dan metadata/GPS-nya dibersihkan otomatis. Jangan sertakan wajahmu sendiri.</small>
+          </div>
+
+          <label class="consent">
+            <input type="checkbox" id="consent" required>
+            <span>Saya memahami laporan ini akan ditinjau pihak berwenang setempat dan tidak memuat data pribadi saya.</span>
+          </label>
+          <small class="field-error" id="consentError" hidden>Centang persetujuan untuk melanjutkan.</small>
+
+          <button class="btn btn--block btn--large" type="submit" id="submitReport">Kirim laporan & dapatkan tiket <span aria-hidden="true">→</span></button>
+        </form>
+      </div>
+    </section>
+
+    <!-- CEK TIKET -->
+    <section class="section section--soft" id="cek-tiket">
+      <div class="container check-grid">
+        <div class="check-copy">
+          <span class="eyebrow eyebrow--dark">Pantau laporan</span>
+          <h2>Cek status dengan kode tiket</h2>
+          <p>Kode tiket adalah satu-satunya kunci untuk melihat perkembangan laporan. Tidak perlu login, tidak perlu identitas.</p>
+          <div class="check-demo-note"><span aria-hidden="true">ⓘ</span> Masukkan kode tiket yang kamu terima saat mengirim laporan. Tanpa kode, status tidak bisa dilihat.</div>
+        </div>
+        <div class="check-panel">
+          <form class="check-form" id="checkForm" novalidate>
+            <label for="ticketInput">Kode tiket</label>
+            <div class="check-form__row">
+              <input id="ticketInput" type="text" placeholder="LA-20261125-7K3P9Q" autocomplete="off" spellcheck="false" required>
+              <button class="btn" type="submit">Cek status</button>
+            </div>
+            <small class="field-error" id="ticketError" hidden>Masukkan kode tiket terlebih dahulu.</small>
+          </form>
+          <div class="check-result" id="checkResult" hidden aria-live="polite"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="section" id="faq">
+      <div class="container faq-grid">
+        <div class="section-head">
+          <span class="eyebrow eyebrow--dark">Tanya jawab</span>
+          <h2>Hal yang sering ditanyakan</h2>
+          <p>Kalau kamu ragu, bagian ini mungkin bisa membantu.</p>
+        </div>
+        <div class="faq-list">
+          <details><summary>Apakah saya harus mendaftar akun?</summary><p>Tidak. Cukup buka halaman, isi laporan, dan simpan kode tiket yang muncul.</p></details>
+          <details><summary>Apakah identitas saya tetap rahasia?</summary><p>Form ini tidak meminta nama, email, atau nomor ponsel. Metadata foto dibersihkan sebelum disimpan, dan akses peninjau dibatasi. Hindari mencantumkan ciri yang bisa mengidentifikasi dirimu di dalam cerita.</p></details>
+          <details><summary>Bagaimana cara mengecek laporan saya?</summary><p>Gunakan kode tiket yang diberikan setelah mengirim laporan pada kolom “Cek status”. Simpan kode tersebut karena tidak ada cara lain untuk mengakses laporanmu.</p></details>
+          <details><summary>Bisakah laporan palsu dibedakan?</summary><p>Laporan akan ditinjau dan dibandingkan polanya. Penilaian akhir tetap dilakukan oleh peninjau manusia, bukan semata-mata sistem otomatis.</p></details>
+          <details><summary>Apa yang terjadi setelah laporan divalidasi?</summary><p>Laporan diteruskan secara terstruktur ke pihak sekolah, pengurus wilayah, atau aparat setempat untuk tindakan pencegahan sedini mungkin.</p></details>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="cta">
+      <div class="container cta__inner">
+        <div>
+          <h2>Lihat sesuatu yang mengkhawatirkan?</h2>
+          <p>Lebih baik menyampaikan lebih awal daripada menyesal kemudian.</p>
+        </div>
+        <a class="btn btn--large btn--light" href="#lapor">Kirim laporan sekarang <span aria-hidden="true">→</span></a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <div>
+        <a class="brand brand--footer" href="#beranda">
+          <span class="brand__mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M12 2.75l7 2.6v6.1c0 4.6-2.95 7.6-7 8.8-4.05-1.2-7-4.2-7-8.8v-6.1l7-2.6z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M8.6 12.1l2.3 2.3 4.6-4.7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          <span class="brand__text">Lapor<span>Aman</span></span>
+        </a>
+        <p class="footer-tagline">Lapor tanpa takut, cegah sebelum terlambat.</p>
+      </div>
+      <div>
+        <h3>Navigasi</h3>
+        <ul class="footer-links"><li><a href="#cara-kerja">Cara kerja</a></li><li><a href="#privasi">Keamanan</a></li><li><a href="#lapor">Kirim laporan</a></li><li><a href="#faq">Tanya jawab</a></li></ul>
+      </div>
+      <div>
+        <h3>Kontak darurat</h3>
+        <p class="footer-contact">Polisi <a href="tel:110">110</a><br>Ambulans <a href="tel:119">119</a><br>PMI <a href="tel:118">118</a></p>
+      </div>
+      <div>
+        <h3>Status layanan</h3>
+        <p class="footer-note">Laporan tersimpan di database dan ditinjau melalui panel admin yang dibatasi aksesnya.</p>
+      </div>
+    </div>
+    <div class="container footer-bottom"><span>© <span id="year">2026</span> LaporAman. Dibuat untuk keamanan lingkungan.</span><span>Node.js • PostgreSQL • Panel admin</span></div>
+  </footer>
+
+  <!-- TICKET MODAL -->
+  <div class="modal" id="ticketModal" hidden>
+    <div class="modal__backdrop" data-close-modal></div>
+    <div class="modal__dialog" role="dialog" aria-modal="true" aria-labelledby="modalTitle" aria-describedby="modalDesc">
+      <button class="modal__close" type="button" data-close-modal aria-label="Tutup">×</button>
+      <div class="modal__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M5 12.5l4.5 4.5L19 7.5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <h2 id="modalTitle">Laporan berhasil dikirim</h2>
+      <p id="modalDesc">Simpan kode tiket ini di tempat aman. Kode tersebut satu-satunya cara untuk mengecek perkembangan laporan.</p>
+      <div class="ticket-box">
+        <span>KODE TIKET</span>
+        <strong id="ticketCode">LA-00000000-XXXXXX</strong>
+        <button class="ticket-copy" type="button" id="copyTicket">Salin kode</button>
+      </div>
+      <p class="modal__warning">Jika kode ini hilang, laporan tidak dapat dicek kembali. Tidak ada pengiriman email/SMS sesuai prinsip anonimitas.</p>
+      <button class="btn btn--block" type="button" data-close-modal>Selesai</button>
+    </div>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script src="app.js" defer></script>
+</body>
+</html>

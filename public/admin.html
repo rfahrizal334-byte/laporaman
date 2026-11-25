@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#0B2545">
+  <title>Panel Peninjauan — LaporAman</title>
+  <link rel="stylesheet" href="admin.css">
+</head>
+<body>
+  <header class="admin-header">
+    <div class="container admin-header__inner">
+      <div class="admin-brand">
+        <span class="admin-brand__mark" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M12 2.75l7 2.6v6.1c0 4.6-2.95 7.6-7 8.8-4.05-1.2-7-4.2-7-8.8v-6.1l7-2.6z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M8.6 12.1l2.3 2.3 4.6-4.7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </span>
+        <div><strong>LaporAman</strong><span>Panel Peninjauan</span></div>
+      </div>
+      <div class="admin-header__right">
+        <span class="admin-header__note">Data laporan bersifat sensitif</span>
+        <a class="admin-header__link" href="/">Lihat website</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="container admin-main">
+    <div class="admin-heading">
+      <div>
+        <h1>Daftar laporan masuk</h1>
+        <p>Tinjau, tentukan prioritas, dan catat tindak lanjut. Nama pelapor tidak tersedia karena tidak pernah dikumpulkan.</p>
+      </div>
+      <button class="btn btn--ghost" type="button" id="refreshButton">Muat ulang</button>
+    </div>
+
+    <section class="stats" aria-label="Ringkasan laporan">
+      <div class="stat"><span>Total laporan</span><strong id="statTotal">—</strong></div>
+      <div class="stat"><span>Menunggu</span><strong id="statWaiting">—</strong></div>
+      <div class="stat"><span>Diproses</span><strong id="statProcess">—</strong></div>
+      <div class="stat"><span>Diteruskan</span><strong id="statForwarded">—</strong></div>
+      <div class="stat stat--warn"><span>Urgensi tinggi</span><strong id="statUrgent">—</strong></div>
+    </section>
+
+    <section class="panel">
+      <div class="toolbar">
+        <div class="toolbar__search">
+          <label class="sr-only" for="searchInput">Cari laporan</label>
+          <input id="searchInput" type="search" placeholder="Cari kategori, lokasi, atau kode tiket…">
+        </div>
+        <div class="toolbar__filter">
+          <label class="sr-only" for="statusFilter">Filter status</label>
+          <select id="statusFilter">
+            <option value="">Semua status</option>
+            <option value="menunggu">Menunggu</option>
+            <option value="diverifikasi">Diverifikasi</option>
+            <option value="prioritas">Prioritas ditentukan</option>
+            <option value="diteruskan">Diteruskan</option>
+            <option value="ditutup">Selesai</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="table-wrap">
+        <table class="report-table">
+          <thead>
+            <tr>
+              <th>Tiket</th>
+              <th>Kategori</th>
+              <th>Lokasi</th>
+              <th>Urgensi</th>
+              <th>Status</th>
+              <th>Prioritas</th>
+              <th>Masuk</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="reportRows"></tbody>
+        </table>
+      </div>
+      <p class="empty-state" id="emptyState" hidden>Belum ada laporan yang cocok.</p>
+    </section>
+  </main>
+
+  <!-- DETAIL -->
+  <div class="drawer" id="detailDrawer" hidden>
+    <div class="drawer__backdrop" data-close-detail></div>
+    <aside class="drawer__panel" role="dialog" aria-modal="true" aria-labelledby="detailTitle">
+      <div class="drawer__head">
+        <div>
+          <span class="drawer__eyebrow">Detail laporan</span>
+          <h2 id="detailTitle">LA-00000000-XXXXXX</h2>
+        </div>
+        <button class="drawer__close" type="button" data-close-detail aria-label="Tutup detail">×</button>
+      </div>
+
+      <div class="drawer__body">
+        <div class="meta-grid" id="detailMeta"></div>
+
+        <section class="detail-section">
+          <h3>Kronologi</h3>
+          <p class="chronology" id="detailChronology"></p>
+        </section>
+
+        <section class="detail-section">
+          <h3>Bukti foto</h3>
+          <div class="evidence" id="detailEvidence"></div>
+        </section>
+
+        <section class="detail-section">
+          <h3>Riwayat status</h3>
+          <div class="mini-timeline" id="detailTimeline"></div>
+        </section>
+
+        <section class="detail-section detail-form-section">
+          <h3>Tindak lanjut</h3>
+          <form id="updateForm">
+            <div class="form-row">
+              <div>
+                <label for="updateStatus">Status</label>
+                <select id="updateStatus">
+                  <option value="menunggu">Menunggu peninjauan</option>
+                  <option value="diverifikasi">Sedang diverifikasi</option>
+                  <option value="prioritas">Prioritas ditentukan</option>
+                  <option value="diteruskan">Diteruskan ke pihak setempat</option>
+                  <option value="ditutup">Selesai ditangani</option>
+                </select>
+              </div>
+              <div>
+                <label for="updatePriority">Prioritas</label>
+                <select id="updatePriority">
+                  <option value="rendah">Rendah</option>
+                  <option value="sedang">Sedang</option>
+                  <option value="tinggi">Tinggi</option>
+                </select>
+              </div>
+            </div>
+            <div>
+              <label for="updatePublicNote">Catatan untuk pelapor <span>(terlihat saat cek tiket)</span></label>
+              <textarea id="updatePublicNote" rows="3" placeholder="Contoh: Laporan sedang diverifikasi petugas setempat."></textarea>
+            </div>
+            <div>
+              <label for="updateAdminNote">Catatan internal <span>(hanya admin)</span></label>
+              <textarea id="updateAdminNote" rows="3" placeholder="Catatan koordinasi dengan pihak sekolah/wilayah."></textarea>
+            </div>
+            <button class="btn btn--block" type="submit" id="saveButton">Simpan pembaruan</button>
+          </form>
+        </section>
+      </div>
+    </aside>
+  </div>
+
+  <div class="toast" id="adminToast" role="status" aria-live="polite"></div>
+  <script src="admin.js" defer></script>
+</body>
+</html>
