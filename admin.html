@@ -17,7 +17,7 @@
         <div><strong>LaporAman</strong><span>Panel Peninjauan</span></div>
       </div>
       <div class="admin-header__right">
-        <span class="admin-header__note">Data laporan bersifat sensitif</span>
+        <span class="admin-header__note">localStorage • tanpa server</span>
         <a class="admin-header__link" href="/">Lihat website</a>
       </div>
     </div>
@@ -27,7 +27,7 @@
     <div class="admin-heading">
       <div>
         <h1>Daftar laporan masuk</h1>
-        <p>Tinjau, tentukan prioritas, dan catat tindak lanjut. Nama pelapor tidak tersedia karena tidak pernah dikumpulkan.</p>
+        <p>Tinjau, tentukan prioritas, dan catat tindak lanjut. Panel ini membaca laporan dari browser yang sama (localStorage) — tidak ada server dan tidak ada nama pelapor.</p>
       </div>
       <button class="btn btn--ghost" type="button" id="refreshButton">Muat ulang</button>
     </div>
@@ -141,7 +141,10 @@
               <label for="updateAdminNote">Catatan internal <span>(hanya admin)</span></label>
               <textarea id="updateAdminNote" rows="3" placeholder="Catatan koordinasi dengan pihak sekolah/wilayah."></textarea>
             </div>
-            <button class="btn btn--block" type="submit" id="saveButton">Simpan pembaruan</button>
+            <div class="form-actions">
+              <button class="btn btn--block" type="submit" id="saveButton">Simpan pembaruan</button>
+              <button class="btn btn--danger" type="button" id="deleteButton">Hapus laporan</button>
+            </div>
           </form>
         </section>
       </div>

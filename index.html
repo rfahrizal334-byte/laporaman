@@ -14,7 +14,7 @@
 
   <div class="demo-bar demo-bar--live">
     <span class="demo-bar__dot" aria-hidden="true"></span>
-    <p><strong>Laporan tersimpan aman.</strong> Tanpa nama, email, atau nomor ponsel. Untuk bahaya langsung, hubungi 110/119.</p>
+    <p><strong>Versi statis.</strong> Laporan disimpan di browser perangkat ini (localStorage). Untuk bahaya langsung, hubungi 110/119.</p>
   </div>
 
   <header class="site-header">
@@ -117,7 +117,7 @@
             <span class="step__number">2</span>
             <div class="step__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M12 3l7 2.5v5.8c0 4.3-2.8 7.1-7 8.2-4.2-1.1-7-3.9-7-8.2V5.5L12 3z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M9 12l2 2 4-4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
             <h3>Jejak digital diputus</h3>
-            <p>Metadata foto bukti dibersihkan otomatis sebelum disimpan; aplikasi tidak mengumpulkan identitas pelapor.</p>
+            <p>Foto disusutkan dan disimpan lokal di browser; aplikasi tidak mengirim data ke server mana pun.</p>
           </li>
           <li class="step">
             <span class="step__number">3</span>
@@ -129,7 +129,7 @@
             <span class="step__number">4</span>
             <div class="step__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M4 12.5l5 5L20 6.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
             <h3>Tindak lanjut lokal</h3>
-            <p>Laporan tervalidasi diteruskan ke guru BK, pengurus wilayah, atau aparat setempat.</p>
+            <p>Dalam versi ini, peninjauan dilakukan lewat panel admin di perangkat yang sama. Untuk penggunaan nyata, laporan diteruskan ke guru BK atau aparat setempat.</p>
           </li>
         </ol>
       </div>
@@ -163,14 +163,14 @@
           <p>Prinsipnya sederhana: sistem tidak boleh mengetahui siapa kamu. Karena itu, laporan tidak meminta data pribadi apa pun.</p>
           <div class="privacy-note">
             <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.8"/><path d="M12 8v5M12 16.5v.01" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-            <p><strong>Keamanan data:</strong> laporan disimpan tanpa identitas pelapor, metadata foto dibersihkan, dan akses admin dibatasi. Kode tiket adalah satu-satunya kunci pengecekan. Tetap gunakan perangkat dan jaringan yang aman.</p>
+            <p><strong>Keamanan data:</strong> laporan disimpan di localStorage browser perangkat ini — tidak ada server, tidak ada akun, tidak ada yang bisa melihatnya dari perangkat lain. Jika data browser dihapus, laporan ikut hilang. Untuk penggunaan sungguhan, prinsip ini tetap berlaku: jangan pernah mengumpulkan identitas pelapor.</p>
           </div>
         </div>
         <div class="privacy-list">
           <div class="privacy-item"><span aria-hidden="true">01</span><div><h3>Tanpa nama, email, atau nomor</h3><p>Form sengaja dibuat sesingkat mungkin agar tidak ada data yang bisa mengarah ke pelapor.</p></div></div>
-          <div class="privacy-item"><span aria-hidden="true">02</span><div><h3>Metadata foto dihapus</h3><p>EXIF/GPS pada bukti foto dibersihkan otomatis sebelum laporan disimpan.</p></div></div>
+          <div class="privacy-item"><span aria-hidden="true">02</span><div><h3>Foto di-encode ulang</h3><p>Foto disusutkan dan diubah menjadi JPEG baru sehingga EXIF/GPS ikut hilang sebelum disimpan.</p></div></div>
           <div class="privacy-item"><span aria-hidden="true">03</span><div><h3>Kode tiket acak</h3><p>Kamu mendapat satu kode unik untuk mengecek status tanpa perlu login atau identitas.</p></div></div>
-          <div class="privacy-item"><span aria-hidden="true">04</span><div><h3>Akses dibatasi</h3><p>Hanya petugas peninjau yang memiliki hubungan dengan penanganan laporan yang dapat melihat isinya.</p></div></div>
+          <div class="privacy-item"><span aria-hidden="true">04</span><div><h3>Tidak ada server</h3><p>Laporan hanya ada di browser perangkat ini. Tidak ada pihak lain yang bisa mengaksesnya secara daring.</p></div></div>
         </div>
       </div>
     </section>
@@ -197,7 +197,7 @@
         <form class="report-form" id="reportForm" novalidate>
           <div class="form-head">
             <span class="form-head__badge">Anonim</span>
-            <p>Laporan akan disimpan tanpa identitas pelapor. Jangan sertakan data pribadi kamu.</p>
+            <p>Laporan disimpan di browser (localStorage) perangkat ini. Untuk presentasi tugas, jangan pakai data pribadi sungguhan.</p>
           </div>
 
           <fieldset class="field-group">
@@ -252,12 +252,12 @@
           <div class="field">
             <label for="bukti">Bukti foto <span class="optional">(opsional)</span></label>
             <input id="bukti" name="bukti" type="file" accept="image/*">
-            <small class="field-hint" id="fileHint">Foto diunggah dan metadata/GPS-nya dibersihkan otomatis. Jangan sertakan wajahmu sendiri.</small>
+            <small class="field-hint" id="fileHint">Foto disusutkan dan disimpan lokal di browser ini. Jangan sertakan wajahmu sendiri.</small>
           </div>
 
           <label class="consent">
             <input type="checkbox" id="consent" required>
-            <span>Saya memahami laporan ini akan ditinjau pihak berwenang setempat dan tidak memuat data pribadi saya.</span>
+            <span>Saya memahami laporan disimpan di browser perangkat ini (localStorage), bukan di server, dan hanya terlihat dari perangkat yang sama.</span>
           </label>
           <small class="field-error" id="consentError" hidden>Centang persetujuan untuk melanjutkan.</small>
 
@@ -272,7 +272,7 @@
         <div class="check-copy">
           <span class="eyebrow eyebrow--dark">Pantau laporan</span>
           <h2>Cek status dengan kode tiket</h2>
-          <p>Kode tiket adalah satu-satunya kunci untuk melihat perkembangan laporan. Tidak perlu login, tidak perlu identitas.</p>
+          <p>Kode tiket adalah satu-satunya kunci untuk melihat perkembangan laporan. Status hanya bisa dicek di perangkat tempat laporan dikirim.</p>
           <div class="check-demo-note"><span aria-hidden="true">ⓘ</span> Masukkan kode tiket yang kamu terima saat mengirim laporan. Tanpa kode, status tidak bisa dilihat.</div>
         </div>
         <div class="check-panel">
@@ -299,10 +299,10 @@
         </div>
         <div class="faq-list">
           <details><summary>Apakah saya harus mendaftar akun?</summary><p>Tidak. Cukup buka halaman, isi laporan, dan simpan kode tiket yang muncul.</p></details>
-          <details><summary>Apakah identitas saya tetap rahasia?</summary><p>Form ini tidak meminta nama, email, atau nomor ponsel. Metadata foto dibersihkan sebelum disimpan, dan akses peninjau dibatasi. Hindari mencantumkan ciri yang bisa mengidentifikasi dirimu di dalam cerita.</p></details>
-          <details><summary>Bagaimana cara mengecek laporan saya?</summary><p>Gunakan kode tiket yang diberikan setelah mengirim laporan pada kolom “Cek status”. Simpan kode tersebut karena tidak ada cara lain untuk mengakses laporanmu.</p></details>
-          <details><summary>Bisakah laporan palsu dibedakan?</summary><p>Laporan akan ditinjau dan dibandingkan polanya. Penilaian akhir tetap dilakukan oleh peninjau manusia, bukan semata-mata sistem otomatis.</p></details>
-          <details><summary>Apa yang terjadi setelah laporan divalidasi?</summary><p>Laporan diteruskan secara terstruktur ke pihak sekolah, pengurus wilayah, atau aparat setempat untuk tindakan pencegahan sedini mungkin.</p></details>
+          <details><summary>Apakah identitas saya tetap rahasia?</summary><p>Form ini tidak meminta nama, email, atau nomor ponsel. Data hanya tersimpan di localStorage browser perangkat ini dan tidak pernah dikirim ke server. Hindari mencantumkan ciri yang bisa mengidentifikasi dirimu di dalam cerita.</p></details>
+          <details><summary>Bagaimana cara mengecek laporan saya?</summary><p>Gunakan kode tiket yang diberikan setelah mengirim laporan pada kolom “Cek status”. Karena data disimpan lokal, cek status hanya bisa dilakukan di perangkat yang sama.</p></details>
+          <details><summary>Bisakah laporan palsu dibedakan?</summary><p>Versi ini belum memiliki filter otomatis. Semua laporan tampil di panel admin untuk ditinjau dan dinilai secara manual oleh peninjau.</p></details>
+          <details><summary>Apa yang terjadi setelah laporan divalidasi?</summary><p>Peninjau membuka <strong>admin.html</strong> di perangkat yang sama untuk mengubah status, menentukan prioritas, dan menambahkan catatan yang bisa dilihat pelapor lewat cek tiket.</p></details>
         </div>
       </div>
     </section>
@@ -330,7 +330,7 @@
       </div>
       <div>
         <h3>Navigasi</h3>
-        <ul class="footer-links"><li><a href="#cara-kerja">Cara kerja</a></li><li><a href="#privasi">Keamanan</a></li><li><a href="#lapor">Kirim laporan</a></li><li><a href="#faq">Tanya jawab</a></li></ul>
+        <ul class="footer-links"><li><a href="#cara-kerja">Cara kerja</a></li><li><a href="#privasi">Keamanan</a></li><li><a href="#lapor">Kirim laporan</a></li><li><a href="#faq">Tanya jawab</a></li><li><a href="admin.html">Panel admin</a></li></ul>
       </div>
       <div>
         <h3>Kontak darurat</h3>
@@ -338,10 +338,10 @@
       </div>
       <div>
         <h3>Status layanan</h3>
-        <p class="footer-note">Laporan tersimpan di database dan ditinjau melalui panel admin yang dibatasi aksesnya.</p>
+        <p class="footer-note">Website statis tanpa database. Laporan tersimpan di localStorage browser perangkat ini.</p>
       </div>
     </div>
-    <div class="container footer-bottom"><span>© <span id="year">2026</span> LaporAman. Dibuat untuk keamanan lingkungan.</span><span>Node.js • PostgreSQL • Panel admin</span></div>
+    <div class="container footer-bottom"><span>© <span id="year">2026</span> LaporAman. Dibuat untuk keamanan lingkungan.</span><span>Statis • localStorage • Panel admin</span></div>
   </footer>
 
   <!-- TICKET MODAL -->
@@ -351,13 +351,13 @@
       <button class="modal__close" type="button" data-close-modal aria-label="Tutup">×</button>
       <div class="modal__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M5 12.5l4.5 4.5L19 7.5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
       <h2 id="modalTitle">Laporan berhasil dikirim</h2>
-      <p id="modalDesc">Simpan kode tiket ini di tempat aman. Kode tersebut satu-satunya cara untuk mengecek perkembangan laporan.</p>
+      <p id="modalDesc">Laporan tersimpan di browser perangkat ini. Simpan kode tiket tersebut untuk mengecek statusnya.</p>
       <div class="ticket-box">
         <span>KODE TIKET</span>
         <strong id="ticketCode">LA-00000000-XXXXXX</strong>
         <button class="ticket-copy" type="button" id="copyTicket">Salin kode</button>
       </div>
-      <p class="modal__warning">Jika kode ini hilang, laporan tidak dapat dicek kembali. Tidak ada pengiriman email/SMS sesuai prinsip anonimitas.</p>
+      <p class="modal__warning">Data hanya ada di browser ini — membersihkan data browser akan menghapus laporan. Tidak ada pengiriman email/SMS sesuai prinsip anonimitas.</p>
       <button class="btn btn--block" type="button" data-close-modal>Selesai</button>
     </div>
   </div>

@@ -1,157 +1,72 @@
-# LaporAman — versi siap deploy
+# LaporAman — versi statis (tanpa database)
 
-Platform laporan anonim lokal dengan backend sungguhan:
+Website laporan anonim lokal untuk mencegah tawuran, perundungan, miras, dan narkoba — **tanpa server dan tanpa database**.
 
-- **Frontend:** HTML + CSS + JavaScript (tanpa framework)
-- **Backend:** Node.js + Express
-- **Database:** PostgreSQL (Supabase / Neon / Render Postgres)
-- **Upload:** foto di-encode ulang dengan Sharp → metadata EXIF/GPS ikut terhapus
-- **Admin:** panel peninjauan di `/admin` dengan Basic Auth
+Semua data disimpan di **localStorage** browser perangkat yang membuka halaman.
 
-> Folder demo lama masih tersimpan di `..\laporaman`. Folder ini adalah versi produksi yang bisa di-deploy.
+## Cara menjalankan
 
-## 1. Menjalankan secara lokal
+Buka `index.html` langsung di browser, atau jalankan server statis sederhana:
 
-### Prasyarat
-- Node.js 18 atau lebih baru
-- PostgreSQL lokal, atau akun Supabase/Neon gratis
-
-### Langkah
 ```powershell
 cd "C:\Users\Hype GLK\Documents\laporaman-live"
-npm install
+npx serve .
 ```
 
-Salin `.env.example` menjadi `.env`:
+Halaman yang tersedia:
 
-```powershell
-Copy-Item .env.example .env
+| Halaman | Fungsi |
+| --- | --- |
+| `index.html` | Website pelapor: form laporan, cek tiket, FAQ |
+| `admin.html` | Panel peninjau: daftar, detail, ubah status/prioritas, hapus |
+
+## Struktur
+
+```
+laporaman/
+├── index.html    # halaman pelapor
+├── styles.css    # desain halaman pelapor
+├── app.js        # simpan laporan + cek status (localStorage)
+├── admin.html    # panel peninjau
+├── admin.css     # desain panel
+├── admin.js      # logika panel (localStorage)
+└── README.md
 ```
 
-Isi `.env`, contoh untuk PostgreSQL lokal:
+## Cara kerja penyimpanan
 
-```env
-PORT=3000
-DATABASE_URL=postgres://postgres:password@localhost:5432/laporaman
-PGSSL=false
-ADMIN_USER=admin
-ADMIN_PASSWORD=ganti-dengan-password-minimal-12-karakter
-TICKET_SECRET=ganti-dengan-string-acak-minimal-16-karakter
-```
+1. Pelapor mengisi form → foto disusutkan lewat canvas (EXIF/GPS ikut hilang) → laporan disimpan ke `localStorage` dengan kunci `laporaman_reports_v1`.
+2. Tiket acak `LA-YYYYMMDD-XXXXXX` dibuat dengan `crypto.getRandomValues`.
+3. Cek status mencari laporan berdasarkan tiket di localStorage.
+4. Panel `admin.html` membaca dan mengubah laporan yang sama (localStorage origin yang sama).
+5. Jika kuota storage penuh, foto otomatis dibuang agar laporan tetap tersimpan.
 
-Buat database `laporaman`, lalu jalankan `schema.sql` di SQL editor:
+## Menyalakan GitHub Pages
 
-```powershell
-psql -U postgres -d laporaman -f schema.sql
-```
+1. Buka repository di GitHub → **Settings → Pages**.
+2. Source: **Deploy from a branch**, Branch: **main**, folder: **/ (root)** → **Save**.
+3. Tunggu 1–2 menit, website bisa diakses di:
+   `https://rfahrizal334-byte.github.io/laporaman/`
+4. Panel admin: `https://rfahrizal334-byte.github.io/laporaman/admin.html`
 
-Jalankan server:
+> Catatan: nama folder repo memengaruhi URL. Jika repo bernama `laporan`, URL-nya `.../laporan/`.
 
-```powershell
-npm start
-```
+## Batasan penting (jujur)
 
-Buka:
-- Website: `http://localhost:3000`
-- Panel admin: `http://localhost:3000/admin`
-- Health check: `http://localhost:3000/api/health`
+- **Data tidak terlihat lintas perangkat.** Laporan yang dikirim di HP tidak muncul di laptop lain. Cocok untuk demo/presentasi tugas sekolah, bukan untuk layanan sungguhan.
+- **localStorage bisa hilang** kalau data browser dibersihkan atau mode penyamaran ditutup.
+- **Bukan pengganti jalur resmi.** Untuk bahaya langsung tetap hubungi `110`/`119`, guru BK, atau aparat setempat.
+- **Untuk penggunaan nyata** dibutuhkan backend + database (contoh stack: Node.js + Express + PostgreSQL) agar laporan terpusat dan bisa ditinjau dari mana saja.
 
-## 2. Deploy ke hosting
+## Privasi yang diterapkan
 
-### Opsi A — Render + Render Postgres
-1. Buat **Web Service** baru, hubungkan repository GitHub.
-2. Runtime: **Node**, Build command: `npm install`, Start command: `npm start`.
-3. Buat **PostgreSQL** di Render, salin *Internal Database URL* ke `DATABASE_URL`.
-4. Tambahkan environment variable lain dari `.env.example`.
-5. Jalankan `schema.sql` lewat SQL editor Render.
-6. Pastikan `PGSSL=false` untuk internal database Render.
-
-### Opsi B — Render + Supabase / Neon
-1. Buat project Supabase atau Neon, ambil connection string.
-2. Isi `DATABASE_URL` dengan string tersebut, set `PGSSL=true`.
-3. Jalankan `schema.sql` di SQL editor provider.
-4. Deploy Web Service seperti Opsi A.
-
-### Opsi C — Railway
-1. New Project → Deploy from GitHub repo.
-2. Add PostgreSQL service, gunakan `DATABASE_URL` yang disediakan Railway.
-3. Set env variables lainnya, jalankan `schema.sql`.
-
-## 3. Alur data
-
-1. Pelapor mengisi form → `POST /api/reports` (multipart).
-2. Server membuat tiket `LA-YYYYMMDD-XXXXXX` dengan `crypto.randomBytes`.
-3. Tiket **tidak disimpan apa adanya**, melainkan HMAC-SHA256 dengan `TICKET_SECRET`. Yang disimpan: `ticket_hash` dan 4 karakter terakhir sebagai petunjuk.
-4. Foto di-encode ulang ke JPEG tanpa metadata, lalu disimpan sebagai `BYTEA`.
-5. Event awal “Laporan diterima” dibuat otomatis.
-6. Pelapor mengecek status via `GET /api/reports/:ticket/status`.
-7. Peninjau membuka `/admin`, mengubah status/prioritas/catatan; perubahan status menambah entri riwayat yang terlihat pelapor.
-
-## 4. API
-
-| Method | Endpoint | Keterangan |
-| --- | --- | --- |
-| `GET` | `/api/health` | Cek koneksi database |
-| `POST` | `/api/reports` | Kirim laporan (+ opsional foto `bukti`) |
-| `GET` | `/api/reports/:ticket/status` | Cek status oleh pelapor |
-| `GET` | `/admin` | Panel admin (Basic Auth) |
-| `GET` | `/api/admin/summary` | Ringkasan jumlah laporan |
-| `GET` | `/api/admin/reports` | Daftar laporan terbaru |
-| `GET` | `/api/admin/reports/:id` | Detail laporan + riwayat |
-| `PATCH` | `/api/admin/reports/:id` | Ubah status, prioritas, catatan |
-| `GET` | `/api/admin/reports/:id/evidence` | Ambil foto bukti |
-
-## 5. Contoh uji cepat
-
-```powershell
-# Cek kesehatan
-curl http://localhost:3000/api/health
-
-# Kirim laporan tanpa foto
-curl -X POST http://localhost:3000/api/reports `
-  -F "kategori=Potensi tawuran" `
-  -F "lokasi=Depan gerbang sekolah" `
-  -F "waktu=Hari ini" `
-  -F "urgensi=Sedang" `
-  -F "kronologi=Ada kumpulan remaja yang saling menantang usai pulang sekolah."
-
-# Cek status (ganti kode tiket yang muncul)
-curl http://localhost:3000/api/reports/LA-20261125-XXXXXX/status
-```
-
-## 6. Catatan keamanan & anonimitas
-
-Sudah dilakukan:
 - Tidak ada field nama, email, atau nomor ponsel.
-- Tidak ada middleware logger yang mencatat IP/header.
-- Tiket disimpan sebagai HMAC, bukan teks biasa.
-- Metadata foto dihapus oleh Sharp saat encode ulang.
-- Panel admin dilindungi Basic Auth dan kredensial dibandingkan dengan `timingSafeEqual`.
-- Header keamanan dari Helmet aktif.
-- Admin hanya melihat 4 karakter terakhir tiket, bukan kode lengkap.
+- Tidak ada analytics, cookie pelacak, atau request ke pihak ketiga.
+- Foto di-encode ulang sehingga metadata EXIF/GPS hilang.
+- Data hanya hidup di browser pengunjung.
 
-Masih perlu diperhatikan sebelum dipakai sungguhan:
-1. **HTTPS wajib** — Basic Auth dan data laporan tidak boleh lewat HTTP.
-2. Gunakan `ADMIN_PASSWORD` dan `TICKET_SECRET` yang kuat, jangan pernah commit `.env`.
-3. Hosting bisa menyimpan log akses di level platform. Pilih provider yang bisa menonaktifkan/menghapus log IP, atau tinjau kebijakan privasi mereka.
-4. Batasi siapa yang punya akun admin; idealnya tambahkan audit log/admin terpisah untuk produksi skala besar.
-5. Pastikan ada prosedur jelas dengan sekolah/aparat sebelum laporan diteruskan.
-6. Tetap sediakan jalur darurat `110`/`119` untuk bahaya langsung.
+## Ide pengembangan selanjutnya
 
-## 7. Struktur folder
-
-```
-laporaman-live/
-├── server.js          # API + static server
-├── schema.sql         # Skema PostgreSQL
-├── .env.example       # Template konfigurasi
-├── package.json
-├── README.md
-└── public/
-    ├── index.html     # Website pelapor
-    ├── styles.css
-    ├── app.js         # Kirim laporan + cek status
-    ├── admin.html     # Panel peninjau
-    ├── admin.css
-    └── admin.js
-```
+- Tambahkan mode penyimpanan alternatif (mis. export/import JSON untuk berpindah perangkat)
+- PWA (service worker) agar bisa dipasang seperti aplikasi
+- Versi backend dengan Express + PostgreSQL untuk penggunaan lintas perangkat

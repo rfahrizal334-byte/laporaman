@@ -26,6 +26,9 @@ a { color: inherit; }
 .btn--ghost { background: #fff; color: var(--navy); border-color: var(--line); }
 .btn--ghost:hover { background: var(--bg); }
 .btn--block { width: 100%; }
+.btn--danger { background: #fff; color: #b91c1c; border-color: #fecaca; }
+.btn--danger:hover { background: #fef2f2; }
+.form-actions { display: grid; grid-template-columns: 1fr auto; gap: 10px; align-items: center; }
 
 /* Header */
 .admin-header { background: var(--navy); color: #fff; }

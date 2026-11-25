@@ -1,9 +1,52 @@
-/* LaporAman — frontend untuk backend Express + PostgreSQL */
+/* LaporAman — versi statis: semua data disimpan di localStorage browser */
 (function () {
   "use strict";
 
   const $ = (selector, root = document) => root.querySelector(selector);
   const $$ = (selector, root = document) => Array.from(root.querySelectorAll(selector));
+
+  const STORAGE_KEY = "laporaman_reports_v1";
+
+  const STATUS_LABELS = {
+    menunggu: "Menunggu peninjauan",
+    diverifikasi: "Sedang diverifikasi",
+    prioritas: "Prioritas ditentukan",
+    diteruskan: "Diteruskan ke pihak setempat",
+    ditutup: "Selesai ditangani",
+  };
+
+  /* ---------- Penyimpanan lokal ---------- */
+  function loadReports() {
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      const parsed = raw ? JSON.parse(raw) : [];
+      return Array.isArray(parsed) ? parsed : [];
+    } catch (error) {
+      return [];
+    }
+  }
+
+  function saveReports(reports) {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(reports));
+  }
+
+  function storeReport(report) {
+    const reports = loadReports();
+    reports.push(report);
+    try {
+      saveReports(reports);
+      return true;
+    } catch (error) {
+      // Kuota penuh: coba ulangi tanpa foto agar laporan tetap tersimpan.
+      report.evidence = null;
+      try {
+        saveReports(reports);
+        return true;
+      } catch (retryError) {
+        return false;
+      }
+    }
+  }
 
   /* ---------- Navigasi mobile ---------- */
   const navToggle = $(".nav-toggle");
@@ -22,7 +65,6 @@
   });
   $$("a", nav).forEach((link) => link.addEventListener("click", closeNav));
 
-  /* ---------- Tahun footer ---------- */
   $("#year").textContent = String(new Date().getFullYear());
 
   /* ---------- Toast ---------- */
@@ -34,6 +76,63 @@
     toast.classList.add("is-visible");
     clearTimeout(toastTimer);
     toastTimer = setTimeout(() => toast.classList.remove("is-visible"), 3000);
+  }
+
+  /* ---------- Tiket acak ---------- */
+  function randomChars(length) {
+    const alphabet = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+    let result = "";
+    if (window.crypto && window.crypto.getRandomValues) {
+      const values = new Uint32Array(length);
+      window.crypto.getRandomValues(values);
+      values.forEach((value) => {
+        result += alphabet[value % alphabet.length];
+      });
+      return result;
+    }
+    for (let i = 0; i < length; i += 1) {
+      result += alphabet[Math.floor(Math.random() * alphabet.length)];
+    }
+    return result;
+  }
+
+  function createTicket() {
+    const now = new Date();
+    const date = [
+      now.getFullYear(),
+      String(now.getMonth() + 1).padStart(2, "0"),
+      String(now.getDate()).padStart(2, "0"),
+    ].join("");
+    return `LA-${date}-${randomChars(6)}`;
+  }
+
+  /* ---------- Kompresi foto (sekaligus membuang EXIF/GPS) ---------- */
+  function compressImage(file) {
+    return new Promise((resolve) => {
+      const reader = new FileReader();
+      reader.onerror = () => resolve(null);
+      reader.onload = () => {
+        const image = new Image();
+        image.onerror = () => resolve(null);
+        image.onload = () => {
+          const maxSize = 1024;
+          let { width, height } = image;
+          if (width > maxSize || height > maxSize) {
+            const scale = Math.min(maxSize / width, maxSize / height);
+            width = Math.round(width * scale);
+            height = Math.round(height * scale);
+          }
+          const canvas = document.createElement("canvas");
+          canvas.width = width;
+          canvas.height = height;
+          canvas.getContext("2d").drawImage(image, 0, 0, width, height);
+          // toDataURL() menghasilkan gambar baru tanpa metadata EXIF/GPS.
+          resolve(canvas.toDataURL("image/jpeg", 0.6));
+        };
+        image.src = reader.result;
+      };
+      reader.readAsDataURL(file);
+    });
   }
 
   /* ---------- Form laporan ---------- */
@@ -73,15 +172,17 @@
   });
   $("#consent").addEventListener("change", () => setError("consent", false));
 
+  const FILE_HINT_DEFAULT =
+    "Foto disusutkan dan disimpan lokal di browser ini. Jangan sertakan wajahmu sendiri.";
+
   fileInput.addEventListener("change", () => {
     $("#fileHint").textContent = fileInput.files.length
-      ? `Berkas dipilih: ${fileInput.files[0].name}. Metadata/GPS akan dibersihkan sebelum disimpan.`
-      : "Foto diunggah dan metadata/GPS-nya dibersihkan otomatis. Jangan sertakan wajahmu sendiri.";
+      ? `Berkas dipilih: ${fileInput.files[0].name}. Foto akan disusutkan sebelum disimpan.`
+      : FILE_HINT_DEFAULT;
   });
 
   function validateForm() {
     const errors = [];
-
     setError("kategori", !$('input[name="kategori"]:checked', form));
     setError("lokasi", !$("#lokasi").value.trim());
     setError("waktu", !$("#waktu").value);
@@ -120,12 +221,10 @@
 
   document.addEventListener("keydown", (event) => {
     if (modal.hidden) return;
-
     if (event.key === "Escape") {
       closeModal();
       return;
     }
-
     if (event.key === "Tab") {
       const focusable = $$(
         'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])',
@@ -133,7 +232,6 @@
       ).filter((element) => !element.disabled);
       const first = focusable[0];
       const last = focusable[focusable.length - 1];
-
       if (event.shiftKey && document.activeElement === first) {
         event.preventDefault();
         last.focus();
@@ -179,27 +277,46 @@
       return;
     }
 
-    const payload = new FormData(form);
-    payload.set("kategori", $('input[name="kategori"]:checked', form).value);
-    if (!fileInput.files.length) payload.delete("bukti");
-
     submitButton.disabled = true;
     submitButton.setAttribute("aria-busy", "true");
-    submitButton.textContent = "Mengirim laporan…";
+    submitButton.textContent = "Menyimpan laporan…";
 
     try {
-      const response = await fetch("/api/reports", { method: "POST", body: payload });
-      const result = await response.json().catch(() => ({}));
-      if (!response.ok) throw new Error(result.error || "Gagal mengirim laporan.");
+      const file = fileInput.files[0] || null;
+      const evidence = file ? await compressImage(file) : null;
+      const now = new Date().toISOString();
+      const ticket = createTicket();
 
-      openModal(result.ticket);
+      const report = {
+        ticket: ticket,
+        kategori: $('input[name="kategori"]:checked', form).value,
+        lokasi: $("#lokasi").value.trim(),
+        waktu: $("#waktu").value,
+        urgensi: $("#urgensi").value,
+        kronologi: kronologi.value.trim(),
+        evidence: evidence,
+        status: "menunggu",
+        prioritas: "sedang",
+        publicNote: "",
+        adminNote: "",
+        createdAt: now,
+        updatedAt: now,
+        timeline: [
+          { label: "Laporan diterima", note: "Aduan tersimpan di browser perangkat ini.", at: now },
+        ],
+      };
+
+      if (!storeReport(report)) {
+        throw new Error("Penyimpanan browser penuh. Hapus sebagian data laporan di panel admin lalu coba lagi.");
+      }
+
+      openModal(ticket);
       form.reset();
       updateCounter();
       Object.keys(fields).forEach((name) => setError(name, false));
-      $("#fileHint").textContent =
-        "Foto diunggah dan metadata/GPS-nya dibersihkan otomatis. Jangan sertakan wajahmu sendiri.";
+      $("#fileHint").textContent = FILE_HINT_DEFAULT;
     } catch (error) {
-      showToast(error.message || "Koneksi gagal. Coba lagi beberapa saat.");
+      showToast(error.message || "Gagal menyimpan laporan.");
     } finally {
       submitButton.disabled = false;
       submitButton.removeAttribute("aria-busy");
@@ -207,7 +324,7 @@
     }
   });
 
-  /* ---------- Cek status sungguhan ---------- */
+  /* ---------- Cek status ---------- */
   const checkForm = $("#checkForm");
   const ticketInput = $("#ticketInput");
   const checkResult = $("#checkResult");
@@ -222,7 +339,7 @@
     });
   }
 
-  function renderStatus(data) {
+  function renderStatus(report) {
     checkResult.innerHTML = `
       <div class="check-result__head">
         <span class="check-result__code"></span>
@@ -230,28 +347,28 @@
       </div>
       <div class="check-result__public-note" hidden></div>
       <div class="timeline"></div>
-      <p class="check-result__note">Data ditampilkan dari sistem. Untuk kerahasiaan, detail catatan internal peninjau tidak ditampilkan.</p>
+      <p class="check-result__note">Data ditampilkan dari penyimpanan lokal browser ini.</p>
     `;
 
-    $(".check-result__code", checkResult).textContent = data.ticket;
-    $(".check-result__status", checkResult).textContent = data.statusLabel || data.status;
+    $(".check-result__code", checkResult).textContent = report.ticket;
+    $(".check-result__status", checkResult).textContent =
+      STATUS_LABELS[report.status] || report.status;
 
-    if (data.publicNote) {
+    if (report.publicNote) {
       const publicNote = $(".check-result__public-note", checkResult);
-      publicNote.textContent = data.publicNote;
+      publicNote.textContent = report.publicNote;
       publicNote.hidden = false;
     }
 
     const timeline = $(".timeline", checkResult);
-    (data.timeline || []).forEach((item, index) => {
+    (report.timeline || []).forEach((item, index) => {
       const element = document.createElement("div");
-      element.className = "timeline__item" + (index === (data.timeline.length - 1) ? " is-active" : "");
-
+      element.className =
+        "timeline__item" + (index === (report.timeline.length - 1) ? " is-active" : "");
       const strong = document.createElement("strong");
       strong.textContent = item.label;
       const span = document.createElement("span");
       span.textContent = [item.note, formatDate(item.at)].filter(Boolean).join(" • ");
-
       element.append(strong, span);
       timeline.appendChild(element);
     });
@@ -259,9 +376,9 @@
     checkResult.hidden = false;
   }
 
-  checkForm.addEventListener("submit", async (event) => {
+  checkForm.addEventListener("submit", (event) => {
     event.preventDefault();
-    const value = ticketInput.value.trim();
+    const value = ticketInput.value.trim().toUpperCase();
 
     if (value.length < 3) {
       ticketError.hidden = false;
@@ -270,25 +387,15 @@
     }
 
     ticketError.hidden = true;
-    const button = $("button", checkForm);
-    const original = button.textContent;
-    button.disabled = true;
-    button.textContent = "Mencari…";
+    const report = loadReports().find((item) => item.ticket === value);
 
-    try {
-      const response = await fetch(`/api/reports/${encodeURIComponent(value)}/status`);
-      const result = await response.json().catch(() => ({}));
-      if (!response.ok) {
-        checkResult.hidden = true;
-        throw new Error(result.error || "Kode tiket tidak ditemukan.");
-      }
-      renderStatus(result);
-    } catch (error) {
-      showToast(error.message || "Gagal menghubungi server.");
-    } finally {
-      button.disabled = false;
-      button.textContent = original;
+    if (!report) {
+      checkResult.hidden = true;
+      showToast("Kode tiket tidak ditemukan di perangkat ini.");
+      return;
     }
+
+    renderStatus(report);
   });
 
   updateCounter();
