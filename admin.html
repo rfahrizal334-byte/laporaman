@@ -28,6 +28,7 @@
       <div>
         <h1>Daftar laporan masuk</h1>
         <p>Tinjau, tentukan prioritas, dan catat tindak lanjut. Panel ini membaca laporan dari browser yang sama (localStorage) — tidak ada server dan tidak ada nama pelapor.</p>
+        <p class="storage-status" id="storageStatus"></p>
       </div>
       <button class="btn btn--ghost" type="button" id="refreshButton">Muat ulang</button>
     </div>
@@ -76,7 +77,11 @@
           <tbody id="reportRows"></tbody>
         </table>
       </div>
-      <p class="empty-state" id="emptyState" hidden>Belum ada laporan yang cocok.</p>
+      <p class="empty-state" id="emptyState" hidden>
+        <strong class="empty-state__title" id="emptyTitle"></strong>
+        <span class="empty-state__hint" id="emptyHint"></span>
+        <button class="btn btn--ghost empty-state__action" type="button" id="sampleButton" hidden>Buat contoh laporan</button>
+      </p>
     </section>
   </main>
 

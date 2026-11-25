@@ -149,7 +149,24 @@
       tbody.appendChild(row);
     });
 
-    $("#emptyState").hidden = filtered.length > 0;
+    const emptyState = $("#emptyState");
+    emptyState.hidden = filtered.length > 0;
+    if (filtered.length === 0) {
+      const hasAny = state.reports.length > 0;
+      $("#emptyTitle").textContent = hasAny
+        ? "Tidak ada laporan yang cocok dengan filter."
+        : "Belum ada laporan di browser ini.";
+      $("#emptyHint").textContent = hasAny
+        ? "Ubah kata kunci pencarian atau pilih status lain."
+        : "Laporan hanya muncul di browser & perangkat tempat laporan dikirim. Pastikan halaman yang dipakai mengirim laporan masih satu browser yang sama.";
+      $("#sampleButton").hidden = hasAny;
+    }
+    renderStorageStatus();
+  }
+
+  function renderStorageStatus() {
+    $("#storageStatus").textContent =
+      `Origin: ${location.origin}  •  ${state.reports.length} laporan tersimpan di localStorage`;
   }
 
   $("#searchInput").addEventListener("input", renderTable);
@@ -321,6 +338,72 @@
       showToast("Gagal menghapus laporan.");
     }
   });
+
+  /* ---------- Contoh laporan (untuk presentasi/demo) ---------- */
+  function randomChars(length) {
+    const alphabet = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+    let result = "";
+    if (window.crypto && window.crypto.getRandomValues) {
+      const values = new Uint32Array(length);
+      window.crypto.getRandomValues(values);
+      values.forEach((value) => {
+        result += alphabet[value % alphabet.length];
+      });
+      return result;
+    }
+    for (let i = 0; i < length; i += 1) {
+      result += alphabet[Math.floor(Math.random() * alphabet.length)];
+    }
+    return result;
+  }
+
+  $("#sampleButton").addEventListener("click", () => {
+    const now = new Date();
+    const date = [
+      now.getFullYear(),
+      String(now.getMonth() + 1).padStart(2, "0"),
+      String(now.getDate()).padStart(2, "0"),
+    ].join("");
+    const iso = now.toISOString();
+    const sample = {
+      ticket: `LA-${date}-${randomChars(6)}`,
+      kategori: "Potensi tawuran",
+      lokasi: "Depan gerbang sekolah (contoh)",
+      waktu: "Hari ini",
+      urgensi: "Sedang",
+      kronologi:
+        "Contoh laporan untuk keperluan presentasi. Ada kumpulan remaja yang saling menantang usai pulang sekolah.",
+      evidence: null,
+      status: "menunggu",
+      prioritas: "sedang",
+      publicNote: "",
+      adminNote: "",
+      createdAt: iso,
+      updatedAt: iso,
+      timeline: [
+        { label: "Laporan diterima", note: "Aduan tersimpan di browser perangkat ini.", at: iso },
+      ],
+    };
+
+    const reports = loadReports();
+    reports.push(sample);
+    try {
+      saveReports(reports);
+      showToast("Contoh laporan dibuat.");
+      loadAll();
+    } catch (error) {
+      showToast("Gagal menyimpan: penyimpanan browser penuh.");
+    }
+  });
+
+  /* ---------- Segarkan otomatis ---------- */
+  document.addEventListener("visibilitychange", () => {
+    if (!document.hidden) loadAll();
+  });
+  window.addEventListener("focus", loadAll);
+  setInterval(() => {
+    if (!document.hidden) loadAll();
+  }, 4000);
 
   loadAll();
 })();

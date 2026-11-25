@@ -79,7 +79,11 @@ a { color: inherit; }
 .badge--rendah { background: #e8f6ee; color: var(--green-dark); }
 .btn-detail { padding: 6px 12px; border: 1px solid var(--line); border-radius: 8px; background: #fff; color: var(--navy); font-size: .78rem; font-weight: 700; cursor: pointer; white-space: nowrap; }
 .btn-detail:hover { border-color: var(--green); color: var(--green-dark); }
-.empty-state { padding: 40px; text-align: center; color: var(--muted); }
+.empty-state { display: flex; flex-direction: column; align-items: center; gap: 8px; padding: 40px 20px; text-align: center; color: var(--muted); }
+.empty-state__title { display: block; font-size: .95rem; color: var(--ink); }
+.empty-state__hint { display: block; max-width: 520px; font-size: .84rem; }
+.empty-state__action { margin-top: 8px; }
+.storage-status { display: inline-block; margin-top: 8px; padding: 5px 11px; background: #e8f6ee; border-radius: 99px; color: var(--green-dark); font-size: .74rem; font-weight: 700; }
 
 /* Drawer */
 .drawer { position: fixed; inset: 0; z-index: 80; }
