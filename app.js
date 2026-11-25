@@ -140,7 +140,6 @@
   const submitButton = $("#submitReport");
   const submitLabel = submitButton.innerHTML;
   const kronologi = $("#kronologi");
-  const counter = $("#charCounter");
   const fileInput = $("#bukti");
 
   const fields = {
@@ -148,19 +147,13 @@
     lokasi: $("#lokasiError"),
     waktu: $("#waktuError"),
     kronologi: $("#kronologiError"),
-    consent: $("#consentError"),
   };
 
   function setError(name, show) {
     if (fields[name]) fields[name].hidden = !show;
   }
 
-  function updateCounter() {
-    counter.textContent = `${kronologi.value.length} karakter`;
-  }
-
   kronologi.addEventListener("input", () => {
-    updateCounter();
     setError("kronologi", false);
   });
 
@@ -170,7 +163,6 @@
   ["lokasi", "waktu"].forEach((id) => {
     $("#" + id).addEventListener("input", () => setError(id, false));
   });
-  $("#consent").addEventListener("change", () => setError("consent", false));
 
   const FILE_HINT_DEFAULT =
     "Foto disusutkan dan disimpan lokal di browser ini. Jangan sertakan wajahmu sendiri.";
@@ -186,8 +178,7 @@
     setError("kategori", !$('input[name="kategori"]:checked', form));
     setError("lokasi", !$("#lokasi").value.trim());
     setError("waktu", !$("#waktu").value);
-    setError("kronologi", kronologi.value.trim().length < 20);
-    setError("consent", !$("#consent").checked);
+    setError("kronologi", !kronologi.value.trim());
 
     Object.keys(fields).forEach((name) => {
       if (!fields[name].hidden) errors.push(name);
@@ -312,7 +303,6 @@
 
       openModal(ticket);
       form.reset();
-      updateCounter();
       Object.keys(fields).forEach((name) => setError(name, false));
       $("#fileHint").textContent = FILE_HINT_DEFAULT;
     } catch (error) {
@@ -397,6 +387,4 @@
 
     renderStatus(report);
   });
-
-  updateCounter();
 })();

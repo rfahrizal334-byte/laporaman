@@ -244,9 +244,8 @@
 
           <div class="field">
             <label for="kronologi">Kronologi singkat <span aria-hidden="true">*</span></label>
-            <textarea id="kronologi" name="kronologi" rows="5" placeholder="Apa yang terjadi? Siapa yang terlibat (tanpa menyebut identitas pelapor)? Bagaimana situasinya sekarang?" minlength="20" required></textarea>
-            <div class="field-footer"><small class="field-hint">Minimal 20 karakter.</small><small class="counter" id="charCounter">0 karakter</small></div>
-            <small class="field-error" id="kronologiError" hidden>Ceritakan minimal 20 karakter.</small>
+            <textarea id="kronologi" name="kronologi" rows="5" placeholder="Apa yang terjadi? Siapa yang terlibat (tanpa menyebut identitas pelapor)? Bagaimana situasinya sekarang?" required></textarea>
+            <small class="field-error" id="kronologiError" hidden>Kronologi wajib diisi.</small>
           </div>
 
           <div class="field">
@@ -254,12 +253,6 @@
             <input id="bukti" name="bukti" type="file" accept="image/*">
             <small class="field-hint" id="fileHint">Foto disusutkan dan disimpan lokal di browser ini. Jangan sertakan wajahmu sendiri.</small>
           </div>
-
-          <label class="consent">
-            <input type="checkbox" id="consent" required>
-            <span>Saya memahami laporan disimpan di browser perangkat ini (localStorage), bukan di server, dan hanya terlihat dari perangkat yang sama.</span>
-          </label>
-          <small class="field-error" id="consentError" hidden>Centang persetujuan untuk melanjutkan.</small>
 
           <button class="btn btn--block btn--large" type="submit" id="submitReport">Kirim laporan & dapatkan tiket <span aria-hidden="true">→</span></button>
         </form>
